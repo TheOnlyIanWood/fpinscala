@@ -4,6 +4,7 @@ import scala.annotation.tailrec
 
 // A comment!
 /* Another comment */
+
 /** A documentation comment */
 object MyModule {
   def abs(n: Int): Int =
@@ -46,13 +47,12 @@ object MyModule {
 
     @tailrec
     def go(x: Int, prev: Int, next: Int): Int = {
-      if (n == 0) 0
-      else if (n == 1) 1
-      else if (x == n) prev + next
+      if (x == n) prev + next
       else go(x + 1, next, prev + next)
     }
 
-    go(2, 0, 1)
+    if (n == 0 || n == 1) n
+    else go(2, 0, 1)
   }
 
   // This definition and `formatAbs` are very similar..
