@@ -46,13 +46,13 @@ object MyModule {
   def fib(n: Int): Int = {
 
     @tailrec
-    def go(x: Int, prev: Int, next: Int): Int = {
-      if (x == n) prev + next
-      else go(x + 1, next, prev + next)
+    def go(x: Int, minus_1: Int, minus_2: Int): Int = {
+      if (x == n) minus_1 + minus_2
+      else go(x + 1, minus_1 + minus_2, minus_1)
     }
 
     if (n == 0 || n == 1) n
-    else go(2, 0, 1)
+    else go(2, 1, 0)
   }
 
   // This definition and `formatAbs` are very similar..
