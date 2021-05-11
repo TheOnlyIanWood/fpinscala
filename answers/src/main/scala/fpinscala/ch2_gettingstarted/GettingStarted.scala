@@ -1,4 +1,4 @@
-package fpinscala.gettingstarted
+package fpinscala.ch2_gettingstarted
 
 // A comment!
 /* Another comment */
