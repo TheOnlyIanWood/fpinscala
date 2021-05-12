@@ -1,5 +1,7 @@
 package fpinscala.ch3_datastructures
 
+import fpinscala.ch3_datastructures.List.tail
+
 import scala.annotation.tailrec
 
 sealed trait List[+A] // `List` data type, parameterized on a type, `A`
@@ -11,7 +13,9 @@ which may be `Nil` or another `Cons`.
  */
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
-object List { // `List` companion object. Contains functions for creating and working with lists.
+object List {
+
+  // `List` companion object. Contains functions for creating and working with lists.
   def sum(ints: List[Int]): Int = ints match { // A function that uses pattern matching to add up a list of integers
     case Nil => 0 // The sum of the empty list is 0.
     case Cons(x, xs) => x + sum(xs) // The sum of a list starting with `x` is `x` plus the sum of the rest of the list.
@@ -88,19 +92,19 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def init[A](l: List[A]): List[A] = {
 
+    @tailrec
     def dropTheLast[A](xs: List[A], acc: List[A]): List[A] = xs match {
       case Nil => println(s"1:"); acc //fucksake. Need uppercase for matching
-      case Cons(h, Cons(h1, Nil)) => println(s"3: $h $h1"); List.append(List(h), acc)
-      case Cons(h, t) => println(s"4: $h $t"); dropTheLast(t, List.setHead(acc, h))
+      case Cons(h, Cons(h1, Nil)) => println(s"3: $h $h1"); append(List(h), acc)
+      case Cons(h, t) => println(s"4: $h $t"); dropTheLast(t, setHead(acc, h))
     }
 
     val reversedLoop = dropTheLast(l, Nil)
 
-    def reverse[A](xs: List[A], acc: List[A]): List[A] = {
-      xs match {
-        case Nil => acc
-        case Cons(h, t) => reverse(t, setHead(acc, h))
-      }
+    @tailrec
+    def reverse[A](xs: List[A], acc: List[A]): List[A] = xs match {
+      case Nil => acc
+      case Cons(h, t) => reverse(t, setHead(acc, h))
     }
 
     reverse(reversedLoop, Nil)
@@ -125,6 +129,57 @@ object List { // `List` companion object. Contains functions for creating and wo
       case Cons(h, t) => foldLeft(t, f(z, h))(f)
     }
 
+  }
+
+  def sumLeft(xs: List[Int]) = foldLeft(xs, 0)((x, y) => x + y)
+
+  def productLeft(xs: List[Int]) = foldLeft(xs, 1)((x, y) => x * y)
+
+  def lengthLeft[A](xs: List[A]): Int = foldLeft(xs, 0)((b, a) => b + 1)
+
+  def reverse[A](l: List[A]) = {
+
+    @tailrec
+    def reverse[A](xs: List[A], acc: List[A]): List[A] = xs match {
+      case Nil => acc
+      case Cons(h, t) => reverse(t, setHead(acc, h))
+    }
+
+    reverse(l, Nil)
+  }
+
+  def reverseLeft[A](l: List[A]): List[A] = {
+    foldLeft(l, Nil: List[A])((x, y) => Cons(y, x))
+  }
+
+  def appendFoldRight[A](a1: List[A], a2: List[A]): List[A] = {
+    foldRight(a1, a2)((x, y) => Cons(x, y))
+  }
+
+  //This may be safer as stack safe
+  def appendFoldLeft[A](a1: List[A], a2: List[A]): List[A] = {
+    foldLeft(reverseLeft(a1), a2)((x, y) => Cons(y, x))
+  }
+
+  def flatten[A, B](xs: List[List[B]]): List[B] = {
+
+    //TODO This isn't linear I expect, especially due to the reverse at the end.
+    def loop(xs: List[List[B]], acc: List[B]): List[B] = xs match {
+      case Nil => acc
+      case Cons(headA, tailA) => headA match {
+        case Nil => acc
+        case Cons(headB, tailB) => {
+
+          def loop2(bs: List[B], acc: List[B]): List[B] = bs match {
+            case Nil => loop(tailA, acc)
+            case Cons(headC, tailC) => loop2(tailC, setHead(acc, headC))
+          }
+          loop2(tailB, setHead(acc, headB))
+        }
+      }
+    }
+
+    reverseLeft(loop(xs, Nil: List[B]))
   }
 
   def map[A, B](l: List[A])(f: A => B): List[B] = ???

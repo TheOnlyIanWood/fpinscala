@@ -108,15 +108,48 @@ class ListTest extends FunSuite {
     assert(FpList.length(l) == 4)
   }
 
-  test("foldLeft") {
-    val l = FpList(1, 2, 3)
+  test("EX10 foldLeft") {
+    val l = FpList(1, 2, 3, 4)
 
-    assert(FpList.foldLeft(l, 0)((x, y) => x + y) == 6)
-    assert(FpList.foldRight(l, 0)((x, y) => x + y) == 6)
+    assert(FpList.foldLeft(l, 0)((x, y) => x + y) == 10)
+    assert(FpList.foldRight(l, 0)((x, y) => x + y) == 10)
 
     val a = FpList(1000, 100, 10)
     println(FpList.foldLeft(a, 0)(_ - _))
     println(FpList.foldRight(a, 0)(_ - _))
 
+  }
+
+  test("EX11 sum, product and length using foldLeft") {
+    val l = FpList(1, 2, 3, 4)
+
+    assert(FpList.sumLeft(l) == 10)
+    assert(FpList.productLeft(l) == 24)
+    assert(FpList.lengthLeft(l) == 4)
+  }
+
+  test("EX12 reverse") {
+    val l = FpList(1, 2, 3, 4)
+    assert(FpList.reverse(l) == FpList(4, 3, 2, 1))
+    assert(FpList.reverseLeft(l) == FpList(4, 3, 2, 1))
+  }
+
+  test("EX13 HARD foldLeft in terms of foldRight") {
+    (pending)
+  }
+
+  test("EX14 append using a fold") {
+    val a1 = FpList(1, 2, 3, 4)
+    val a2 = FpList(5, 6, 7, 8)
+
+    assert(FpList.appendFoldRight(a1, a2) == FpList(1, 2, 3, 4, 5, 6, 7, 8))
+    assert(FpList.appendFoldLeft(a1, a2) == FpList(1, 2, 3, 4, 5, 6, 7, 8))
+  }
+
+  test("EX15 HARD  Write a function that concatenates a list of lists into a single list. ") {
+
+    val l = FpList(FpList( , 2, 3), FpList(4, 5, 6), FpList(7, 8, 9))
+    val expected = FpList(1, 2, 3, 4, 5, 6, 7, 8, 9)
+    assert(FpList.flatten(l) == expected)
   }
 }
