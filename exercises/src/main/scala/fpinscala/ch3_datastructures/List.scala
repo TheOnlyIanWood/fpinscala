@@ -102,12 +102,14 @@ object List { // `List` companion object. Contains functions for creating and wo
   }
 
   def length[A](l: List[A]): Int = {
-    var i = 0
-    def counter(a: A, b: Int) = {
-      i += 1
-      i
+
+    def counter(a: A, b: Int): Int = {
+      println(s"a [$a] [$b]")
+      b + 1
     }
-    foldRight(l, 0)(counter)
+
+    //    foldRight(l, 0)(counter)
+    foldRight(l, 0)((a, b) => b + 1)
   }
 
   def foldLeft[A, B](l: List[A], z: B)(f: (B, A) => B): B = ???
