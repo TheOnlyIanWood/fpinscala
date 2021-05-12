@@ -45,6 +45,7 @@ object MyModule {
   //0, 1, 1, 2, 3, 5
   def fib(n: Int): Int = {
 
+    //correct answer goes down, and is more simple perhaps.
     @tailrec
     def go(x: Int, minus_1: Int, minus_2: Int): Int = {
       if (x == n) minus_1 + minus_2
@@ -145,7 +146,8 @@ object PolymorphicFunctions {
   // Here's a polymorphic version of `binarySearch`, parameterized on
   // a function for testing whether an `A` is greater than another `A`.
   def binarySearch[A](as: Array[A], key: A, gt: (A, A) => Boolean): Int = {
-    @annotation.tailrec
+
+    @tailrec
     def go(low: Int, mid: Int, high: Int): Int = {
       if (low > high) -mid - 1
       else {
@@ -165,6 +167,8 @@ object PolymorphicFunctions {
   // an `Array[A]` is sorted
   def isSorted[A](as: Array[A], gt: (A, A) => Boolean): Boolean = {
 
+    // I think mine is backwards but still seems to work.
+    @tailrec
     def loop(n: Int, sorted: Boolean): Boolean = {
       if (!sorted) sorted
       else if (n + 1 == as.length) sorted
@@ -184,14 +188,18 @@ object PolymorphicFunctions {
 
   // Note that `=>` associates to the right, so we could
   // write the return type as `A => B => C`
-  def curry[A, B, C](f: (A, B) => C): A => (B => C) =
-    ???
+  def curry[A, B, C](f: (A, B) => C): A => (B => C) = {
+    (a: A) => f(a, _)
+//    a => b => f(a, b) //correct answer
+  }
 
   // NB: The `Function2` trait has a `curried` method already
 
   // Exercise 4: Implement `uncurry`
-  def uncurry[A, B, C](f: A => B => C): (A, B) => C =
-    ???
+  def uncurry[A, B, C](f: A => B => C): (A, B) => C = {
+    (a: A, b: B) => f(a)(b)
+    //  (a, b) => f(a)(b) correct answer, no types
+  }
 
   /*
   NB: There is a method on the `Function` object in the standard library,
@@ -204,7 +212,7 @@ object PolymorphicFunctions {
   */
 
   // Exercise 5: Implement `compose`
-
   def compose[A, B, C](f: B => C, g: A => B): A => C =
-    ???
+    (a: A) => f(g(a))
+    //a => f(g(a)) no type
 }
