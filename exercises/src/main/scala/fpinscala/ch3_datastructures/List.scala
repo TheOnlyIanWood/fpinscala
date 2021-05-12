@@ -73,10 +73,15 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
     case Nil => Nil
-    case Cons(h, t) => if(f(h)) dropWhile(t, f) else l
+    case Cons(h, t) => if (f(h)) dropWhile(t, f) else l
   }
 
-  def init[A](l: List[A]): List[A] =  {
+  def dropWhile2[A](l: List[A])(f: A => Boolean): List[A] = l match {
+    case Nil => Nil
+    case Cons(h, t) => if (f(h)) dropWhile(t, f) else l
+  }
+
+  def init[A](l: List[A]): List[A] = {
 
     def dropTheLast[A](xs: List[A], acc: List[A]): List[A] = xs match {
       case Nil => println(s"1:"); acc //fucksake. Need uppercase for matching
@@ -96,7 +101,14 @@ object List { // `List` companion object. Contains functions for creating and wo
     reverse(reversedLoop, Nil)
   }
 
-  def length[A](l: List[A]): Int = ???
+  def length[A](l: List[A]): Int = {
+    var i = 0
+    def counter(a: A, b: Int) = {
+      i += 1
+      i
+    }
+    foldRight(l, 0)(counter)
+  }
 
   def foldLeft[A, B](l: List[A], z: B)(f: (B, A) => B): B = ???
 

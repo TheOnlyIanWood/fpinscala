@@ -1,25 +1,24 @@
-fpinscala.ch3_datastructures.List.x
+fpinscala.ch3_datastructures.List
 
-import fpinscala.ch3_datastructures.{Cons => fpCons, List => FpList, Nil => FpNil}
+import fpinscala.ch3_datastructures.List.foldRight
+import fpinscala.ch3_datastructures.{Cons => FpCons, List => FpList, Nil => FpNil}
 
-val s = ""
-val l = FpList(1, 2, 3, 4, 5)
-//val l = fpList(1, 2)
+def product2(ns: FpList[Double]) = foldRight(ns, 1.0)(_ * _)
 
 
-def loop[A](xs: FpList[A], acc: FpList[A]): FpList[A] = xs match {
-  case FpNil => println(s"1:"); acc //fucksake. Need uppercase for matching
-  case fpCons(h, fpCons(h1, fpCons(h2, FpNil))) => println(s"2: $h $h1 $h2"); FpList.append(FpList(h1, h), acc)
-  case fpCons(h, t) => println(s"3: $h $t"); loop(t, FpList.setHead(acc, h))
+val l = FpList(1.0, 2.0, 3.0, 4.0, 5.0)
+product2(l)
+
+
+def product3(ns: FpList[Double]) = {
+  foldRight(ns, 1.0)((x, y) => {
+    if (x == 0.0 || y == 0.0) 0.0
+    else x * y
+  })
 }
 
-val reversedloop = loop(l, FpNil)
 
-def reverse[A](xs: FpList[A], acc: FpList[A]): FpList[A] = {
-  xs match {
-    case FpNil => acc
-    case fpCons(h, t) => reverse(t, FpList.setHead(acc, h))
-  }
-}
+product3(l)
 
-reverse(reversedloop, FpNil)
+foldRight(FpList(1, 2, 3), FpNil: FpList[Int])(FpCons(_, _))
+
