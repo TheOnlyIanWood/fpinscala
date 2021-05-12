@@ -99,11 +99,24 @@ class ListTest extends FunSuite {
 
   test("EX 8 Nil and Cons") {
     foldRight(FpList(1, 2, 3), FpNil: FpList[Int])(FpCons(_, _))
+    //cons is right assoiactive?
   }
 
   test("EX 9 Length of a list") {
     val l = FpList(1, 2, 3, 4)
 
     assert(FpList.length(l) == 4)
+  }
+
+  test("foldLeft") {
+    val l = FpList(1, 2, 3)
+
+    assert(FpList.foldLeft(l, 0)((x, y) => x + y) == 6)
+    assert(FpList.foldRight(l, 0)((x, y) => x + y) == 6)
+
+    val a = FpList(1000, 100, 10)
+    println(FpList.foldLeft(a, 0)(_ - _))
+    println(FpList.foldRight(a, 0)(_ - _))
+
   }
 }
