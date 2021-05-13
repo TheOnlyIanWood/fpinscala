@@ -148,7 +148,7 @@ class ListTest extends FunSuite {
 
   test("EX15 HARD  Write a function that concatenates a list of lists into a single list. ") {
 
-    val l = FpList(FpList( , 2, 3), FpList(4, 5, 6), FpList(7, 8, 9))
+    val l = FpList(FpList(1, 2, 3), FpList(4, 5, 6), FpList(7, 8, 9))
     val expected = FpList(1, 2, 3, 4, 5, 6, 7, 8, 9)
     assert(FpList.flatten(l) == expected)
   }

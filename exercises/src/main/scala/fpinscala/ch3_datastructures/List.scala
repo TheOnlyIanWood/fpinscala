@@ -164,22 +164,22 @@ object List {
   def flatten[A, B](xs: List[List[B]]): List[B] = {
 
     //TODO This isn't linear I expect, especially due to the reverse at the end.
-    def loop(xs: List[List[B]], acc: List[B]): List[B] = xs match {
+    def outerListLoop(xs: List[List[B]], acc: List[B]): List[B] = xs match {
       case Nil => acc
       case Cons(headA, tailA) => headA match {
         case Nil => acc
         case Cons(headB, tailB) => {
 
-          def loop2(bs: List[B], acc: List[B]): List[B] = bs match {
-            case Nil => loop(tailA, acc)
-            case Cons(headC, tailC) => loop2(tailC, setHead(acc, headC))
+          def eachListLoop(bs: List[B], acc: List[B]): List[B] = bs match {
+            case Nil => outerListLoop(tailA, acc)
+            case Cons(headC, tailC) => eachListLoop(tailC, setHead(acc, headC))
           }
-          loop2(tailB, setHead(acc, headB))
+          eachListLoop(tailB, setHead(acc, headB))
         }
       }
     }
 
-    reverseLeft(loop(xs, Nil: List[B]))
+    reverseLeft(outerListLoop(xs, Nil: List[B]))
   }
 
   def map[A, B](l: List[A])(f: A => B): List[B] = ???
