@@ -46,7 +46,7 @@ object List {
     }
 
   def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B): B = { // Utility functions{
-    println(s"z [$z]")
+    println(s"foldRight as[$as] [$z].")
 
     as match {
       case Nil => z
@@ -167,7 +167,7 @@ object List {
     def outerListLoop(xs: List[List[B]], acc: List[B]): List[B] = xs match {
       case Nil => acc
       case Cons(headA, tailA) => headA match {
-        case Nil => acc
+        //        case Nil => acc //TODO, do I need this case? Write a unit test
         case Cons(headB, tailB) => {
 
           def eachListLoop(bs: List[B], acc: List[B]): List[B] = bs match {
@@ -206,7 +206,49 @@ object List {
     reverse(loop(l, Nil: List[A]))
   }
 
-  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = flatten(map(l)(f))
+  def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] = flatten(map(l)(f))
 
+  def filterWithFlatMap[A](l: List[A])(f: A => Boolean): List[A] = {
 
+    def fun(a: A): List[A] = {
+      if (f(a)) List(a) else Nil
+    }
+
+    flatMap(l)(a => {
+      println(s"a [$a].")
+      val r = fun(a)
+      println(s"r [$r].")
+      r
+    })
+  }
+
+  def addTwoLists(as: List[Int], bs: List[Int]): List[Int] = {
+
+    def loop(aas: List[Int], bbs: List[Int], acc: List[Int]): List[Int] = {
+      aas match {
+        case Nil => acc
+        case Cons(ah, at) => bbs match {
+          case Nil => acc
+          case Cons(bh, bt) => loop(at, bt, setHead(acc, ah + bh))
+        }
+      }
+    }
+
+    reverse(loop(as, bs, Nil: List[Int]))
+  }
+
+  def zipWith[A](as: List[A], bs: List[A])(f: (A,A) => A) :List[A] = {
+
+    def loop(aas: List[A], bbs: List[A], acc: List[A]): List[A] = {
+      aas match {
+        case Nil => acc
+        case Cons(ah, at) => bbs match {
+          case Nil => acc
+          case Cons(bh, bt) => loop(at, bt, setHead(acc, f(ah,  bh)))
+        }
+      }
+    }
+
+    reverse(loop(as, bs, Nil: List[A]))
+  }
 }

@@ -150,7 +150,7 @@ class ListTest extends FunSuite {
 
     val l = FpList(FpList(1, 2, 3), FpList(4, 5, 6), FpList(7, 8, 9))
     val expected = FpList(1, 2, 3, 4, 5, 6, 7, 8, 9)
-    assert(FpList.flatten(l) == expected)
+    assert(FpList.flatten(l) == expected) //TODO check this impl for a Nil case
   }
 
   test("EX16 transforms a list of integers by adding 1to each element") {
@@ -175,5 +175,28 @@ class ListTest extends FunSuite {
   test("EX20 flatMap") {
     //flatMap(List(1,2,3))(i => List(i,i)) ==  List(1,1,2,2,3,3)
     assert(FpList.flatMap(FpList(1, 2, 3))(i => FpList(i, i)) == FpList(1, 1, 2, 2, 3, 3))
+  }
+
+  test("EX21 filterWithFlatMap") {
+    val input = FpList(2, 3, 4, 5, 6, 7, 8, 9, 10)
+    val expect = FpList(2, 4, 6, 8, 10)
+    //    assert(FpList.filterWithFlatMap(input)(_ % 2 == 0) == expect)
+    //TODO I think my impl of flatten is the problem.
+    assert(FpList.flatten(FpList.map(input)(i => if (i % 2 != 0) FpList(FpNil) else FpList(FpList(i)))) == expect)
+
+  }
+
+  test("EX22 accepts two lists and constructs a new list by adding corresponding element ") {
+    val a = FpList(1, 2, 3)
+    val b = FpList(4, 5, 6)
+    val expected = FpList(5, 7, 9)
+    assert(FpList.addTwoLists(a, b) == expected)
+  }
+
+  test("EX23 zipWith.") {
+    val a = FpList(1, 2, 3)
+    val b = FpList(4, 5, 6)
+    val expected = FpList(5, 7, 9)
+    assert(FpList.zipWith(a, b)(_ + _) == expected)
   }
 }
