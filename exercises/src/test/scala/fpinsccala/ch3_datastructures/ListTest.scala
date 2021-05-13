@@ -152,4 +152,28 @@ class ListTest extends FunSuite {
     val expected = FpList(1, 2, 3, 4, 5, 6, 7, 8, 9)
     assert(FpList.flatten(l) == expected)
   }
+
+  test("EX16 transforms a list of integers by adding 1to each element") {
+    assert(FpList.add1(FpList(1, 2, 3)) == FpList(2, 3, 4))
+  }
+
+  test("EX17 each value in a List[Double] into a String.") {
+    assert(FpList.doublesToString(FpList(1.0, 1.1, 1.2)) == FpList("1.0", "1.1", "1.2"))
+  }
+
+  test("EX18 map") {
+    assert(FpList.map(FpList(1, 2, 3))(_ + 1) == FpList(2, 3, 4))
+    assert(FpList.map(FpList(1.0, 1.1, 1.2))(_.toString) == FpList("1.0", "1.1", "1.2"))
+  }
+
+  test("EX19 filter") {
+    val input = FpList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    val expect = FpList(2, 4, 6, 8, 10)
+    assert(FpList.filter(input)(_ % 2 == 0) == expect)
+  }
+
+  test("EX20 flatMap") {
+    //flatMap(List(1,2,3))(i => List(i,i)) ==  List(1,1,2,2,3,3)
+    assert(FpList.flatMap(FpList(1, 2, 3))(i => FpList(i, i)) == FpList(1, 1, 2, 2, 3, 3))
+  }
 }

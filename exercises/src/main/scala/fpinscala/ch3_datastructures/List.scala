@@ -174,6 +174,7 @@ object List {
             case Nil => outerListLoop(tailA, acc)
             case Cons(headC, tailC) => eachListLoop(tailC, setHead(acc, headC))
           }
+
           eachListLoop(tailB, setHead(acc, headB))
         }
       }
@@ -182,5 +183,30 @@ object List {
     reverseLeft(outerListLoop(xs, Nil: List[B]))
   }
 
-  def map[A, B](l: List[A])(f: A => B): List[B] = ???
+  def add1(ints: List[Int]): List[Int] = {
+    foldRight(ints, Nil: List[Int])((x, y) => Cons(x + 1, y))
+  }
+
+  def doublesToString(doubles: List[Double]): List[String] = {
+    foldRight(doubles, Nil: List[String])((x, y) => Cons(x.toString, y))
+  }
+
+  def map[A, B](l: List[A])(f: A => B): List[B] = {
+    foldRight(l, Nil: List[B])((x, y) => Cons(f(x), y))
+  }
+
+  def filter[A](l: List[A])(f: A => Boolean): List[A] = {
+
+    @tailrec
+    def loop(as: List[A], acc: List[A]): List[A] = as match {
+      case Nil => acc
+      case Cons(h, t) => if (f(h)) loop(t, setHead(acc, h)) else loop(t, acc)
+    }
+
+    reverse(loop(l, Nil: List[A]))
+  }
+
+  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = flatten(map(l)(f))
+
+
 }
