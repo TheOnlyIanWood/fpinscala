@@ -1,6 +1,6 @@
 package fpinsccala.ch3_datastructures
 
-import fpinscala.ch3_datastructures.List.foldRight
+import fpinscala.ch3_datastructures.List.{foldRight, hasSubsequence}
 import org.scalatest.FunSuite
 import fpinscala.ch3_datastructures.{List => FpList}
 import fpinscala.ch3_datastructures.{Nil => FpNil}
@@ -198,5 +198,12 @@ class ListTest extends FunSuite {
     val b = FpList(4, 5, 6)
     val expected = FpList(5, 7, 9)
     assert(FpList.zipWith(a, b)(_ + _) == expected)
+  }
+
+  test("EX24 HARD hasSubsequence") {
+    (pending)
+    val list = FpList(1, 2, 3, 4)
+    val subSequence = FpList(1, 2)
+    assert(FpList(hasSubsequence(list, subSequence)) == true)
   }
 }

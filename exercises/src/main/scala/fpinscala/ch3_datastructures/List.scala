@@ -251,4 +251,9 @@ object List {
 
     reverse(loop(as, bs, Nil: List[A]))
   }
+
+  def hasSubsequence[A](l: List[A], sub: List[A]): Boolean = {
+???
+  }
+
 }
