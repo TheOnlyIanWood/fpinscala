@@ -17,7 +17,6 @@ class TreeTest extends FunSuite {
         Branch(leaf, leaf))
     ) == 7)
 
-
     assert(Tree.size(
       Branch(Branch(Branch(leaf, leaf), Branch(leaf, leaf)),
         Branch(leaf, leaf))
@@ -33,7 +32,28 @@ class TreeTest extends FunSuite {
     assert(Tree.maximum(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(4), Leaf(3)))) == 4)
     assert(Tree.maximum(Branch(Branch(Leaf(1), Leaf(4)), Branch(Leaf(3), Leaf(2)))) == 4)
     assert(Tree.maximum(Branch(Branch(Leaf(2), Leaf(4)), Branch(Leaf(3), Leaf(1)))) == 4)
-
   }
+
+  test("EX27 depth") {
+    val leaf = Leaf(1)
+    assert(Tree.depth(leaf) == 1)
+    assert(Tree.depth(Branch(leaf, leaf)) == 2)
+
+    assert(Tree.depth(
+      Branch(
+        Branch(
+          leaf, leaf), leaf)) == 3)
+  }
+
+  test("EX28 map"){
+assert(
+    Tree.map(
+    Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Leaf(4))))(_ * 2)
+  ==
+
+    Branch(Branch(Leaf(2), Leaf(4)), Branch(Leaf(6), Leaf(8)))
+    )
+  }
+
 
 }
