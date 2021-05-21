@@ -23,6 +23,25 @@ class TreeTest extends FunSuite {
     ) == 11)
 
   }
+  
+test("EX29 sizeFold") {
+    val leaf = Leaf(1)
+
+    assert(Tree.sizeFold(leaf) == 1)
+
+    assert(Tree.sizeFold(Branch(leaf, leaf)) == 3)
+
+    assert(Tree.sizeFold(
+      Branch(Branch(leaf, leaf),
+        Branch(leaf, leaf))
+    ) == 7)
+
+    assert(Tree.sizeFold(
+      Branch(Branch(Branch(leaf, leaf), Branch(leaf, leaf)),
+        Branch(leaf, leaf))
+    ) == 11)
+
+  }
 
   test("EX26 maximum") {
     assert(Tree.maximum(Branch(Leaf(2), Leaf(20))) == 20)
@@ -33,6 +52,16 @@ class TreeTest extends FunSuite {
     assert(Tree.maximum(Branch(Branch(Leaf(1), Leaf(4)), Branch(Leaf(3), Leaf(2)))) == 4)
     assert(Tree.maximum(Branch(Branch(Leaf(2), Leaf(4)), Branch(Leaf(3), Leaf(1)))) == 4)
   }
+  
+  test("EX29 maximumFold") {
+    assert(Tree.maximumFold(Branch(Leaf(2), Leaf(20))) == 20)
+    assert(Tree.maximumFold(Branch(Leaf(20), Leaf(2))) == 20)
+
+    assert(Tree.maximumFold(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(3), Leaf(4)))) == 4)
+    assert(Tree.maximumFold(Branch(Branch(Leaf(1), Leaf(2)), Branch(Leaf(4), Leaf(3)))) == 4)
+    assert(Tree.maximumFold(Branch(Branch(Leaf(1), Leaf(4)), Branch(Leaf(3), Leaf(2)))) == 4)
+    assert(Tree.maximumFold(Branch(Branch(Leaf(2), Leaf(4)), Branch(Leaf(3), Leaf(1)))) == 4)
+  }
 
   test("EX27 depth") {
     val leaf = Leaf(1)
@@ -40,6 +69,17 @@ class TreeTest extends FunSuite {
     assert(Tree.depth(Branch(leaf, leaf)) == 2)
 
     assert(Tree.depth(
+      Branch(
+        Branch(
+          leaf, leaf), leaf)) == 3)
+  }
+  
+  test("EX29 depthFold") {
+    val leaf = Leaf(1)
+    assert(Tree.depthFold(leaf) == 1)
+    assert(Tree.depthFold(Branch(leaf, leaf)) == 2)
+
+    assert(Tree.depthFold(
       Branch(
         Branch(
           leaf, leaf), leaf)) == 3)
